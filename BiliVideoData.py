@@ -6,9 +6,9 @@ import csv
 def ReadBvidFromJson(json_file_path):
     with open(json_file_path, 'r', encoding='utf-8') as file:
         data = json.load(file)
-    return data.get('bvids', [])
+    return data.get('bvids', []),data.get('uid', '')
 
-def GetVideoInfo(bvid):
+def GetVideoInfo(bvid, uid):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
     }
@@ -22,6 +22,7 @@ def GetVideoInfo(bvid):
         pubdate_readable = datetime.datetime.fromtimestamp(pubdate_timestamp).strftime('%Y-%m-%d %H:%M:%S')
         return {
             "bvid": bvid,
+            "uid": uid,
             "title": video_info['title'],
             "tname": video_info['tname'],
             "pubdate": pubdate_readable,
@@ -40,34 +41,35 @@ def GetVideoInfo(bvid):
         print(f"Key error when parsing data for BVID {bvid}: {e}")
         return None
 
-def SaveToCSV(video_info, filename='data/video_info.csv'):
+def SaveToCSV(video_info, filename='data/VideoInfo.csv'):
     with open(filename, 'a', newline='', encoding='utf-8') as csvfile:
-        fieldnames = ["bvid", "title", "tname", "pubdate", "view", "danmaku", "reply", "favorite", "coin", "share", "like"]
+        fieldnames = ["bvid", "uid", "title", "tname", "pubdate", "view", "danmaku", "reply", "favorite", "coin", "share", "like"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writerow(video_info)
 
-def SaveProblematicBvids(bvids, filename='data/problematic_bvids.json'):
+def SaveProblematicBvids(bvids,uid, filename='data/ProblematicBvids.json'):
     with open(filename, 'w', encoding='utf-8') as file:
-        json.dump(bvids, file, ensure_ascii=False, indent=4)
+        data = {"bvids": bvids,"uid": uid}  # 构造包含bvids关键字的字典
+        json.dump(data, file, ensure_ascii=False, indent=4)
 
-def InitializeCsvFile(fieldnames, filename='data/video_info.csv'):
+def InitializeCsvFile(fieldnames, filename='data/VideoInfo.csv'):
     with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
 if __name__ == '__main__':
-    json_path = 'data/NotCrawlBvid.json'
-    BvidList = ReadBvidFromJson(json_path)
-    problematic_bvids = []
+    json_path = 'data/problematic_bvids.json'
+    BvidList,uid = ReadBvidFromJson(json_path)
+    ProblematicBvids = [] # 存储出问题的BVID
 
     if BvidList:
-        InitializeCsvFile(["bvid", "title", "tname", "pubdate", "view", "danmaku", "reply", "favorite", "coin", "share", "like"])
+        InitializeCsvFile(["bvid", "uid", "title", "tname", "pubdate", "view", "danmaku", "reply", "favorite", "coin", "share", "like"])
         for bvid in BvidList:
-            video_info = GetVideoInfo(bvid)
+            video_info = GetVideoInfo(bvid,uid)
             if video_info is not None:
                 SaveToCSV(video_info)
             else:
-                problematic_bvids.append(bvid)
-        SaveProblematicBvids(problematic_bvids)
+                ProblematicBvids.append(bvid)
+        SaveProblematicBvids(ProblematicBvids,uid)
     else:
         print("未从JSON文件中读取到数据")

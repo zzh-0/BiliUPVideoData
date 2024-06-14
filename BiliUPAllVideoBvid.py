@@ -9,6 +9,7 @@ import json
 class GetAllVideo():
     def __init__(self,uid):
         self.BvList = []  # 存储视频Bv号
+        self.uid = uid # 对应up的uid
         self.browser = webdriver.Chrome()
         self.url=f'https://space.bilibili.com/{uid}/video'
         self.browser.get(self.url)
@@ -27,7 +28,7 @@ class GetAllVideo():
         for li in lis:
             self.BvList.append(li.get_attribute("data-aid"))
         with open("data/UPData.json", "w+", encoding="utf-8") as f:
-            data = {"bvids": self.BvList}  # 构造包含bvids关键字的字典
+            data = {"bvids": self.BvList,"uid":uid}
             data = json.dumps(data, ensure_ascii=False)
             f.write(data)
 
@@ -54,6 +55,11 @@ class GetAllVideo():
 
 
 if __name__ == '__main__':
-    uid = '456664753'
+    uid = '23947287'
+    # 23947287 小约翰可汗
+    # 504934876 渤海小吏
+    # 519872016 历史调研室
+    # 7481602 安州牧
+    # 10698584 唠点历史
     GetAllVideo(uid).run()
 
