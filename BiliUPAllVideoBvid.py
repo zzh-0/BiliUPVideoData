@@ -27,7 +27,7 @@ class GetAllVideo():
         lis = ul.find_elements(By.XPATH, "li")
         for li in lis:
             self.BvList.append(li.get_attribute("data-aid"))
-        with open("data/UPData.json", "w+", encoding="utf-8") as f:
+        with open("data/UPData5.json", "w+", encoding="utf-8") as f:
             data = {"bvids": self.BvList,"uid":uid}
             data = json.dumps(data, ensure_ascii=False)
             f.write(data)

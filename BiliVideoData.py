@@ -41,29 +41,31 @@ def GetVideoInfo(bvid, uid):
         print(f"Key error when parsing data for BVID {bvid}: {e}")
         return None
 
-def SaveToCSV(video_info, filename='data/VideoInfo.csv'):
+def SaveToCSV(video_info, filename='data/VideoInfo5.csv'):
     with open(filename, 'a', newline='', encoding='utf-8') as csvfile:
         fieldnames = ["bvid", "uid", "title", "tname", "pubdate", "view", "danmaku", "reply", "favorite", "coin", "share", "like"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writerow(video_info)
 
-def SaveProblematicBvids(bvids,uid, filename='data/ProblematicBvids.json'):
+def SaveProblematicBvids(bvids,uid, filename='data/ProblematicBvids5.json'):
     with open(filename, 'w', encoding='utf-8') as file:
         data = {"bvids": bvids,"uid": uid}  # 构造包含bvids关键字的字典
         json.dump(data, file, ensure_ascii=False, indent=4)
 
-def InitializeCsvFile(fieldnames, filename='data/VideoInfo.csv'):
+def InitializeCsvFile(fieldnames, filename='data/VideoInfo5.csv'):
     with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
 if __name__ == '__main__':
-    json_path = 'data/problematic_bvids.json'
+    # json_path = 'data/UPData5.json'
+    json_path = 'data/ProblematicBvids5.json'
     BvidList,uid = ReadBvidFromJson(json_path)
     ProblematicBvids = [] # 存储出问题的BVID
 
     if BvidList:
-        InitializeCsvFile(["bvid", "uid", "title", "tname", "pubdate", "view", "danmaku", "reply", "favorite", "coin", "share", "like"])
+        if "ProblematicBvids" not in json_path:
+            InitializeCsvFile(["bvid", "uid", "title", "tname", "pubdate", "view", "danmaku", "reply", "favorite", "coin", "share", "like"])
         for bvid in BvidList:
             video_info = GetVideoInfo(bvid,uid)
             if video_info is not None:

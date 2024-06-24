@@ -4,8 +4,10 @@
 ## 文件说明
 
 ```bash
-|-- data    # 数据
-|-- page    # 可视化网页
+|-- data    				# 数据
+    |-- UPData.json			# UP个人信息
+    |-- VideoInfo.csv		# 视频信息
+|-- page   					# 可视化网页
 |-- BiliUPAllVideoBvid.py   # 爬取某位UP的全部视频BVID
 |-- BiliUPData.py			# UP个人信息
 |-- BiliVideoData.py		# BVID对应的视频数据
@@ -23,6 +25,8 @@
 
 见 `BiliUPAllVideoBvid.py` 
 
+**登录问题**：登录框时显时不显，显示会对爬取造成影响，建议手动登录
+
 ```python
 class GetAllVideo():
     def __init__(self,uid):
@@ -32,12 +36,11 @@ class GetAllVideo():
         self.url=f'https://space.bilibili.com/{uid}/video'
         self.browser.get(self.url)
 
-
     # 登录
     def login(self):
         # self.browser.find_element(By.PARTIAL_LINK_TEXT, '登录').click()
+        # 手动登录
         time.sleep(20)
-
     
     # 获取视频Bv号
     def GetVideoUrl(self):
@@ -71,8 +74,6 @@ class GetAllVideo():
         self.NextPage()
         print("success!")
 ```
-
-
 
 #### 获取所有视频信息
 
@@ -112,14 +113,26 @@ API：
 https://api.bilibili.com/x/space/acc/info?mid={uid}
 ```
 
-***注：访问此API经常性报错**
+***注：访问此API经常性报错，由于数据分析未用到这些数据，所以未深入探究**
+
+
 
 ## 数据可视化
 
-> 以五位历史区UP主为例：
+> 以五位历史区UP主为例（截至日期：2024年6月14日）：
 >
-> 小约翰可汗 23947287
-> 渤海小吏 504934876
-> 历史调研室 519872016
-> 安州牧 7481602
-> 唠点历史 10698584
+> - [小约翰可汗](https://space.bilibili.com/23947287) 23947287
+>   data/UPData1.json
+>   data/VideoInfo1.csv
+> - [渤海小吏](https://space.bilibili.com/504934876) 504934876
+>   data/UPData2.json
+>   data/VideoInfo2.csv
+> - [历史调研室](https://space.bilibili.com/519872016) 519872016
+>   data/UPData3.json
+>   data/VideoInfo3.csv
+> - [安州牧](https://space.bilibili.com/7481602) 7481602
+>   data/UPData4.json
+>   data/VideoInfo4.csv
+> - [唠点历史](https://space.bilibili.com/10698584) 10698584
+>   data/UPData5.json
+>   data/VideoInfo5.csv
