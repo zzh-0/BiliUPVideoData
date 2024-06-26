@@ -1,10 +1,16 @@
 import pandas as pd
 
-df1 = pd.read_csv('v01.csv')
-df2 = pd.read_csv('video_info.csv')
+# 初始化一个空列表来保存数据框
+dataframes = []
 
-merged_df = pd.concat([df1, df2], ignore_index=True)
+# 循环遍历从1到5（包括5），构造文件名并读取数据
+for i in range(1, 6):
+    filename = f'data/VideoInfo{i}.csv'
+    df = pd.read_csv(filename)
+    dataframes.append(df)
 
-merged_df.to_csv('merged_file.csv', index=False)
+# 合并所有数据框
+merged_df = pd.concat(dataframes, ignore_index=True)
 
-print("合并完成！")
+# 保存到新的CSV文件
+merged_df.to_csv('data/AllVideoInfo.csv', index=False)

@@ -1,5 +1,16 @@
 # 哔哩哔哩up视频数据可视化
-[TOC]
+
+- [哔哩哔哩up视频数据可视化](#哔哩哔哩up视频数据可视化)
+  - [文件说明](#文件说明)
+  - [数据爬取](#数据爬取)
+    - [UP主视频信息](#up主视频信息)
+      - [获取所有视频BVID](#获取所有视频bvid)
+      - [获取所有视频信息](#获取所有视频信息)
+    - [UP主个人信息](#up主个人信息)
+      - [其他个人信息api](#其他个人信息api)
+  - [数据可视化](#数据可视化)
+    - [展示](#展示)
+
 
 ## 文件说明
 
@@ -7,13 +18,15 @@
 |-- data    				# 数据
     |-- UPData.json			# UP个人信息
     |-- VideoInfo.csv		# 视频信息
-|-- page   					# 可视化网页
+|-- page   					# visual.ipynb对应可视化网页
+|-- page2   				# visual2.ipynb对应可视化网页2
 |-- BiliUPAllVideoBvid.py   # 爬取某位UP的全部视频BVID
 |-- BiliUPData.py			# UP个人信息
 |-- BiliVideoData.py		# BVID对应的视频数据
 |-- BvidNotCrawl.py			# 筛选未爬取的BVID视频数据
 |-- MergeCSV.py				# 合并csv
-|-- visual.ipynb			# 数据可视化
+|-- visual.ipynb			# 数据可视化（废案）
+|-- visual2.ipynb			# 数据可视化（最终结果）
 |-- README.md
 ```
 
@@ -25,7 +38,7 @@
 
 见 `BiliUPAllVideoBvid.py` 
 
-**登录问题**：登录框时显时不显，显示会对爬取造成影响，建议手动登录
+**登录问题**：登录框 时显 时不显，显示会对爬取造成影响，建议手动登录
 
 ```python
 class GetAllVideo():
@@ -115,9 +128,25 @@ https://api.bilibili.com/x/space/acc/info?mid={uid}
 
 ***注：访问此API经常性报错，由于数据分析未用到这些数据，所以未深入探究**
 
+#### 其他个人信息api
+
+获取粉丝数和关注数
+
+```
+https://api.bilibili.com/x/relation/stat?vmid={uid}
+```
+
+获取总播放量和点赞量
+
+```
+https://api.bilibili.com/x/space/upstat?mid={uid}
+```
+
 
 
 ## 数据可视化
+
+见 `visual2.ipynb`
 
 > 以五位历史区UP主为例（截至日期：2024年6月14日）：
 >
@@ -136,3 +165,22 @@ https://api.bilibili.com/x/space/acc/info?mid={uid}
 > - [唠点历史](https://space.bilibili.com/10698584) 10698584
 >   data/UPData5.json
 >   data/VideoInfo5.csv
+
+### 展示
+
+见 `page2` 目录
+
+下面只展示部分可视化图表
+
+![p1](https://cdn.jsdelivr.net/gh/zzh-0/Pic@img/img/202406262236477.png)
+
+
+![p2](https://cdn.jsdelivr.net/gh/zzh-0/Pic@img/img/202406262235292.png)
+
+
+![p3](https://cdn.jsdelivr.net/gh/zzh-0/Pic@img/img/202406262234646.png)
+
+
+![p4](https://cdn.jsdelivr.net/gh/zzh-0/Pic@img/img/202406262234156.png)
+
+
